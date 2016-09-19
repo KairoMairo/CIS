@@ -16,6 +16,7 @@ public:
     bool load_items(int index); //загружает список продукции (принимает id документа)
     bool save_document(DocumentType type); //сохраняем изменения
     bool save_all();
+    //коммент
 
     QList<CDocument*> get_documents(DocumentType type); //возвращаем список документов
 
