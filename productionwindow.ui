@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CProductionWindow</class>
+ <widget class="QMainWindow" name="CProductionWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>Производство</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(255, 247, 206);</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_user">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string>Пользователь:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLabel" name="user_name">
+      <property name="styleSheet">
+       <string notr="true">color: rgb(85, 85, 255);</string>
+      </property>
+      <property name="text">
+       <string>ФИО</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="2">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QTabWidget" name="work_space">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(255, 255, 255);</string>
+        </property>
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <widget class="QWidget" name="order_marker">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
+         <attribute name="title">
+          <string>Анализ заказов</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="0">
+           <widget class="QTableView" name="order_table">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="dragDropOverwriteMode">
+             <bool>true</bool>
+            </property>
+            <property name="selectionMode">
+             <enum>QAbstractItemView::ExtendedSelection</enum>
+            </property>
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+            <property name="showGrid">
+             <bool>false</bool>
+            </property>
+            <property name="gridStyle">
+             <enum>Qt::NoPen</enum>
+            </property>
+            <property name="sortingEnabled">
+             <bool>false</bool>
+            </property>
+            <attribute name="horizontalHeaderCascadingSectionResizes">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+            <attribute name="verticalHeaderCascadingSectionResizes">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="verticalHeaderHighlightSections">
+             <bool>false</bool>
+            </attribute>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Работа с документами</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="review_document_3">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 247, 206);</string>
+              </property>
+              <property name="text">
+               <string>Просмотреть</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="struct_process_marker">
+         <attribute name="title">
+          <string>Планирование структур и процессов</string>
+         </attribute>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QTableView" name="power_table">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <attribute name="horizontalHeaderCascadingSectionResizes">
+               <bool>true</bool>
+              </attribute>
+              <attribute name="horizontalHeaderStretchLastSection">
+               <bool>true</bool>
+              </attribute>
+              <attribute name="verticalHeaderVisible">
+               <bool>false</bool>
+              </attribute>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Работа с документами</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="create_document">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 247, 206);</string>
+              </property>
+              <property name="text">
+               <string>Создать</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="review_document">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 247, 206);</string>
+              </property>
+              <property name="text">
+               <string>Просмотреть</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="reduct_document">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 247, 206);</string>
+              </property>
+              <property name="text">
+               <string>Редактировать</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="sign_document">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 247, 206);</string>
+              </property>
+              <property name="text">
+               <string>Подписать</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="Line" name="line">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="delete_document">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 247, 206);</string>
+              </property>
+              <property name="text">
+               <string>Удалить</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="production_program_marker">
+         <attribute name="title">
+          <string>Производственная программа</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <widget class="QToolBox" name="toolbox_production_program">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>180</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">border-color: rgb(255, 170, 127);
+background-color: rgb(255, 247, 206);</string>
+            </property>
+            <property name="currentIndex">
+             <number>2</number>
+            </property>
+            <widget class="QWidget" name="production_costs_page">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>100</width>
+               <height>30</height>
+              </rect>
+             </property>
+             <attribute name="label">
+              <string>Затраты на производство</string>
+             </attribute>
+            </widget>
+            <widget class="QWidget" name="purchase_page">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>100</width>
+               <height>30</height>
+              </rect>
+             </property>
+             <attribute name="label">
+              <string>Закупка</string>
+             </attribute>
+            </widget>
+            <widget class="QWidget" name="logistics_page">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>180</width>
+               <height>69</height>
+              </rect>
+             </property>
+             <attribute name="label">
+              <string>Логистика</string>
+             </attribute>
+            </widget>
+            <widget class="QWidget" name="salary_page">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>100</width>
+               <height>30</height>
+              </rect>
+             </property>
+             <attribute name="label">
+              <string>З/п сотрудникам</string>
+             </attribute>
+            </widget>
+            <widget class="QWidget" name="force_majeure_page">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>100</width>
+               <height>30</height>
+              </rect>
+             </property>
+             <attribute name="label">
+              <string>Форс-мажорные обстоятельства</string>
+             </attribute>
+            </widget>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <layout class="QVBoxLayout" name="verticalLayout_2">
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="text">
+               <string>Работа с документами</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="create_document_2">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 247, 206);</string>
+              </property>
+              <property name="text">
+               <string>Создать</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="review_document_2">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 247, 206);</string>
+              </property>
+              <property name="text">
+               <string>Просмотреть</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="reduct_document_2">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 247, 206);</string>
+              </property>
+              <property name="text">
+               <string>Редактировать</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="sign_document_2">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 247, 206);</string>
+              </property>
+              <property name="text">
+               <string>Подписать</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="Line" name="line_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="delete_document_2">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(255, 247, 206);</string>
+              </property>
+              <property name="text">
+               <string>Удалить</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item row="0" column="1">
+           <widget class="QTableView" name="account_table">
+            <attribute name="horizontalHeaderStretchLastSection">
+             <bool>true</bool>
+            </attribute>
+            <attribute name="verticalHeaderVisible">
+             <bool>false</bool>
+            </attribute>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="styleSheet">
+     <string notr="true">selection-color: rgb(85, 0, 255);</string>
+    </property>
+    <property name="title">
+     <string>Меню</string>
+    </property>
+    <addaction name="main_menu"/>
+    <addaction name="save"/>
+    <addaction name="save_all"/>
+    <addaction name="separator"/>
+    <addaction name="close_program"/>
+   </widget>
+   <widget class="QMenu" name="menu_user">
+    <property name="styleSheet">
+     <string notr="true">selection-color: rgb(85, 0, 255);</string>
+    </property>
+    <property name="title">
+     <string>Пользователь</string>
+    </property>
+    <addaction name="change_user"/>
+    <addaction name="show_user_data"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_user"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="main_menu">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Главное меню</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+M</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>Сменить пользователя</string>
+   </property>
+  </action>
+  <action name="close_program">
+   <property name="text">
+    <string>Выход</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="change_user">
+   <property name="text">
+    <string>Сменить пользователя</string>
+   </property>
+  </action>
+  <action name="show_user_data">
+   <property name="text">
+    <string>Просмотр данных о пользователе</string>
+   </property>
+  </action>
+  <action name="save">
+   <property name="text">
+    <string>Сохранить страницу</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="save_all">
+   <property name="text">
+    <string>Сохранить все</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
