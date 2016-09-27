@@ -5,6 +5,8 @@ CController::CController()
 {
     load_documents(ORDER);
 
+    user = NULL;
+
     for (int type = ORDER; type < QUANTITY_TYPES; type++)
     {
         saved[type] = true;
@@ -376,6 +378,23 @@ bool CController::document_signed(DocumentType type, int index)
     return false;
 }
 
+bool CController::authorization(QString login, QString password)
+{
+    if (user != NULL)
+    {
+        delete user;
+    }
+
+    user = data_base.authorization(login, password);
+
+    if (user != NULL)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 //удаляем звездочку в конце строки
 QString CController::delete_star(QString string)
 {
@@ -402,6 +421,31 @@ QString CController::add_star(QString string)
     }
 
     return string;
+}
+
+QString CController::get_user_FIO()
+{
+    return user->get_surname() + " " + user->get_name() + " " + user->get_patronymic();
+}
+
+QString CController::get_user_surname()
+{
+    return user->get_surname();
+}
+
+QString CController::get_user_name()
+{
+    return user->get_name();
+}
+
+QString CController::get_user_patronymic()
+{
+    return user->get_patronymic();
+}
+
+QString CController::get_user_position()
+{
+    return user->get_position();
 }
 
 //отчищаем список заказов
