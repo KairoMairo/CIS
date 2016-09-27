@@ -42,9 +42,16 @@ public:
     bool is_saved();
     bool is_saved(DocumentType type);
     bool document_signed(DocumentType type, int index);
+    bool authorization(QString login, QString password);
 
     QString delete_star(QString string);
     QString add_star(QString string);
+
+    QString get_user_FIO();
+    QString get_user_surname();
+    QString get_user_name();
+    QString get_user_patronymic();
+    QString get_user_position();
 
 private:
     void clear_items();
@@ -55,6 +62,8 @@ private:
     QList<CItem*> items; //список продукции
     QList<CPart*> parts; //список необходимых материалов
     QList<CEquipment*> equipments; //список оборудования
+
+    CUser* user;
 
     CDataBase data_base; //для работы с базой данных
 

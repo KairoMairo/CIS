@@ -1,6 +1,9 @@
 #include "productionwindow.h"
 #include "ui_productionwindow.h"
 #include "mainwindow.h"
+#include "equipmentwindow.h"
+#include "authorizationwindow.h"
+#include "userwindow.h"
 
 #include <QStandardItemModel>
 #include <QStandardItem>
@@ -38,7 +41,6 @@ CProductionWindow::CProductionWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    controller = new CController;
     signed_now = false;
 
     //связывем сигнал "выбрали пункт меню Главное меню" со слотом "перейти в главное меню"
@@ -47,13 +49,12 @@ CProductionWindow::CProductionWindow(QWidget *parent) :
     //связываем сигнал "выбрали пункт меню Выход" со слотом "закрыть диалог. окно"
     connect(ui->close_program, SIGNAL(triggered()), this, SLOT(close()));
 
-    //обновляем текущую таблицу
-    updata_table(test_page());
+
 }
 
 CProductionWindow::~CProductionWindow()
 {
-    delete controller;
+    delete _controller;
 
     if (ui->order_table->model() != NULL)
     {
@@ -101,6 +102,7 @@ void CProductionWindow::make_tables_model()
 
     //updata_order_table();
 
+
 }
 
 
@@ -126,27 +128,27 @@ void CProductionWindow::updata_table(DocumentType type)
 
     QStandardItem *item;
 
-    int size = controller->get_document_size(type);
+    int size =_controller->get_document_size(type);
 
     for (int i = 0; i < size; i++)
     {
-        item = new QStandardItem(controller->get_document_index(type, i));
+        item = new QStandardItem(_controller->get_document_index(type, i));
         //item->setEditable(false);
         model->setItem(i, ID, item);
 
-        item = new QStandardItem(controller->get_document_name(type, i));
+        item = new QStandardItem(_controller->get_document_name(type, i));
         model->setItem(i, NAME, item);
 
-        item = new QStandardItem(controller->get_document_added_date(type, i));
+        item = new QStandardItem(_controller->get_document_added_date(type, i));
         model->setItem(i, ADDED_DATE, item);
 
-        item = new QStandardItem(controller->get_document_status(type, i));
+        item = new QStandardItem(_controller->get_document_status(type, i));
         model->setItem(i, STATUS, item);
 
-        item = new QStandardItem(controller->get_document_completion_date(type, i));
+        item = new QStandardItem(_controller->get_document_completion_date(type, i));
         model->setItem(i, COMPLETION_DATE, item);
 
-        item = new QStandardItem(controller->get_document_comment(type, i));
+        item = new QStandardItem(_controller->get_document_comment(type, i));
         item->setEditable(true);
         model->setItem(i, COMMENT, item);
     }
@@ -171,7 +173,7 @@ void CProductionWindow::closeEvent(QCloseEvent *event)
     }
     else if (choose == QMessageBox::SaveAll)
     {
-        controller->save_all();
+       _controller->save_all();
         event->accept();
     }
 }
@@ -187,12 +189,21 @@ void CProductionWindow::delete_stars()
 //удаляем * из заголовка выбранной страницы
 void CProductionWindow::delete_stars(int page)
 {
-    if (controller->is_saved())
+    if (_controller->is_saved())
     {
-        setWindowTitle(controller->delete_star(windowTitle()));
+        setWindowTitle(_controller->delete_star(windowTitle()));
     }
 
-    ui->work_space->setTabText(page, controller->delete_star(ui->work_space->tabText(page)));
+    ui->work_space->setTabText(page,_controller->delete_star(ui->work_space->tabText(page)));
+}
+
+void CProductionWindow::open_user_window()
+{
+    CUserWindow* dlg = new CUserWindow;
+    connect(this, SIGNAL(review_user(CController*)), dlg, SLOT(get_controller(CController*)));
+    emit review_user(_controller);
+
+    dlg->show();
 }
 
 //смотрим, на какой мы странице сейчас
@@ -219,7 +230,7 @@ DocumentType CProductionWindow::test_page()
 //спрашиваем, хотим ли сохранить измененные файлы? (если таковые имеются)
 int CProductionWindow::test_save()
 {
-    if (!controller->is_saved())
+    if (!_controller->is_saved())
     {
         QMessageBox message("Предупреждение",
                             "Имеются несохраненные данные. "
@@ -259,7 +270,7 @@ void CProductionWindow::slot_go_main_menu()
     }
     else if (choose == QMessageBox::SaveAll)
     {
-        controller->save_all();
+       _controller->save_all();
         go_main_menu();
     }
 
@@ -280,7 +291,7 @@ void CProductionWindow::on_review_document_3_clicked()
 
     connect(this, SIGNAL(review_order(CController*, int)), order_window, SLOT(get_controller(CController*, int)));
 
-    emit review_order(controller, index);
+    emit review_order(_controller, index);
 
     order_window->show();
 }
@@ -290,10 +301,10 @@ void CProductionWindow::after_close_order_window()
 {
     updata_table(ORDER);
 
-    if (!controller->is_saved(ORDER))
+    if (!_controller->is_saved(ORDER))
     {
-        setWindowTitle(controller->add_star(windowTitle()));
-        ui->work_space->setTabText(ORDER_MODEL, controller->add_star(ui->work_space->tabText(ORDER_MODEL)));
+        setWindowTitle(_controller->add_star(windowTitle()));
+        ui->work_space->setTabText(ORDER_MODEL,_controller->add_star(ui->work_space->tabText(ORDER_MODEL)));
     }
 
     if (signed_now)
@@ -305,14 +316,14 @@ void CProductionWindow::after_close_order_window()
 //выбрали пункт меню "сохранить"
 void CProductionWindow::on_save_triggered()
 {
-    controller->save_document(test_page());
+   _controller->save_document(test_page());
     delete_stars(test_page());
 }
 
 //выбрали пункт меню "сохранить все"
 void CProductionWindow::on_save_all_triggered()
 {
-    controller->save_all();
+   _controller->save_all();
     delete_stars();
 }
 
@@ -320,4 +331,80 @@ void CProductionWindow::on_save_all_triggered()
 void CProductionWindow::on_work_space_currentChanged(int index)
 {
     updata_table(test_page());
+}
+
+//создать документ плана производства
+void CProductionWindow::on_create_document_clicked()
+{
+    CEquipmentWindow* dlg = new CEquipmentWindow(this);
+
+    dlg->show();
+}
+
+//открываем окно "производство"
+void CProductionWindow::on_review_document_clicked()
+{
+    CEquipmentWindow* dlg = new CEquipmentWindow(this);
+
+    dlg->show();
+}
+
+//открываем окно "производство" для редактирования
+void CProductionWindow::on_reduct_document_clicked()
+{
+    CEquipmentWindow* dlg = new CEquipmentWindow(this);
+
+    dlg->show();
+
+}
+
+void CProductionWindow::get_controller(CController *controller)
+{
+    _controller = controller;
+
+    //обновляем текущую таблицу
+    updata_table(test_page());
+    ui->user_name->setText(_controller->get_user_FIO());
+}
+
+void CProductionWindow::on_change_user_triggered()
+{
+    CAuthorizationWindow* dlg = new CAuthorizationWindow;
+    connect(this, SIGNAL(authorization(CController*)), dlg, SLOT(get_controller(CController*)));
+    emit authorization(_controller);
+
+    dlg->show();
+    this->close();
+}
+
+void CProductionWindow::on_show_user_data_triggered()
+{
+
+    int choose = test_save();
+
+    if (choose == QMessageBox::Ok)
+    {
+        open_user_window();
+    }
+    else if (choose == QMessageBox::SaveAll)
+    {
+       _controller->save_all();
+        open_user_window();
+    }
+
+}
+
+void CProductionWindow::on_close_program_triggered()
+{
+    int choose = test_save();
+
+    if (choose == QMessageBox::Ok)
+    {
+        close();
+    }
+    else if (choose == QMessageBox::SaveAll)
+    {
+       _controller->save_all();
+       close();
+    }
 }
