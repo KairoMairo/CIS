@@ -29,6 +29,7 @@ private:
     CController* controller;
     orderwindow* order_window;
     bool signed_now;
+    int _index;
 
 
 private:
@@ -38,6 +39,7 @@ private:
     void closeEvent(QCloseEvent *event);
     void delete_stars();
     void delete_stars(int page);
+    void update_list_components();
 
     DocumentType test_page();
 
@@ -55,6 +57,7 @@ private slots:
     void on_save_triggered();
     void on_save_all_triggered();
     void on_work_space_currentChanged(int index);
+
 };
 
 #endif // PRODUCTIONWINDOW_H

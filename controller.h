@@ -14,6 +14,7 @@ public:
 
     bool load_documents(DocumentType type); // загружаем документ
     bool load_items(int index); //загружает список продукции (принимает id документа)
+    bool load_components(int index);
     bool save_document(DocumentType type); //сохраняем изменения
     bool save_all();
 
@@ -36,6 +37,16 @@ public:
     QString get_item_quantity(int index);
     QString get_item_sum(int index);
     QString get_item_production_time(int index);
+
+    QString get_components_id(int index);
+    QString get_components_name(int index);
+    QString get_components_id_component(int index);
+    QString get_components_count(int index);
+    QString get_components_id_item(int index);
+
+    void get_index_window_item(int index);
+    int set_index_window_item();
+
     float get_item_total();
     int get_item_size();
 
@@ -49,16 +60,19 @@ public:
 private:
     void clear_items();
     void clear_documents();
+    void clear_components();
+
 
 private:
     QList<CDocument*> documents[QUANTITY_TYPES]; // список всех документов
     QList<CItem*> items; //список продукции
     QList<CPart*> parts; //список необходимых материалов
     QList<CEquipment*> equipments; //список оборудования
-
+    QList<CComponents *> components; //список компонентов
     CDataBase data_base; //для работы с базой данных
 
     bool saved[QUANTITY_TYPES];
+    int _index;
 };
 
 #endif // CCONTROLLER_H

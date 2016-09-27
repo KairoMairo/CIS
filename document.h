@@ -9,7 +9,8 @@ enum DocumentType
 {
     ORDER,
     POWER,
-    COSTS
+    COSTS,
+    COMPONENTS
 };
 
 enum DocumentStatus

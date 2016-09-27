@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     processing.cpp \
     part.cpp \
     productionmodel.cpp \
-    modelproduction.cpp
+    modelproduction.cpp \
+    components.cpp
 
 HEADERS  += mainwindow.h \
     productionwindow.h \
@@ -46,7 +47,8 @@ HEADERS  += mainwindow.h \
     processing.h \
     part.h \
     productionmodel.h \
-    modelproduction.h
+    modelproduction.h \
+    components.h
 
 FORMS    += mainwindow.ui \
     productionwindow.ui \

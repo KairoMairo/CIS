@@ -7,7 +7,7 @@
 #include <QVariant>
 #include <QFileInfo>
 #include <QDir>
-
+#include<QMessageBox>
 #include <QStringList>
 
 
@@ -84,6 +84,43 @@ QList<CItem *> CDataBase::load_items(int id)
     return items;
 }
 
+QList<CComponents *> CDataBase::load_components(int id_item)
+{
+    QString string =    "SELECT * FROM componentsofmaterials;";
+
+    string =            string.arg(id_item);
+
+    QSqlQuery query(data_base);
+
+    if (!query.exec(string))
+    {
+        QMessageBox::warning(0,
+                                     "Warning",
+                                     "БД не подключилась,"
+                                     "",
+                                     QString(),
+                                     0
+                                    );
+    }
+
+    QSqlRecord rec =    query.record();
+    QList<CComponents*>       components;
+    CComponents*              component;
+
+    while (query.next())
+    {
+
+        component = new CComponents(query.value(rec.indexOf("id")).toInt(),
+                         query.value(rec.indexOf("name")).toString(),
+                         query.value(rec.indexOf("id_component")).toInt(),
+                         query.value(rec.indexOf("id_item")).toInt(),
+                         query.value(rec.indexOf("count_component")).toInt());
+
+        components.push_back(component);
+    }
+    return components;
+}
+
 //возвращает индексы обработок для изготовления продукции с id_item из материалов с индексом id_part
 QList<int> CDataBase::load_part_processing(int id_part, int id_item)
 {
@@ -107,7 +144,6 @@ QList<int> CDataBase::load_part_processing(int id_part, int id_item)
     }
 
     return processes;
-
 }
 
 QList<CProcessing *> CDataBase::load_processing(int id_equipment)
@@ -186,6 +222,7 @@ bool CDataBase::updata_document(DocumentType type, CDocument *document)
 
     return true;
 }
+
 
 //открываем базу данных "производство"
 //при успешном открытии возвращает true
