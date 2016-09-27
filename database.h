@@ -8,7 +8,7 @@
 #include "document.h"
 #include "item.h"
 #include "equipment.h"
-#include "components.h"
+#include "user.h"
 
 
 class CDataBase
@@ -20,7 +20,7 @@ public:
     QList<int> load_part_processing(int id_part, int id_item);
     QList<CProcessing*> load_processing(int id_equipment);
     QList<CEquipment *> load_equipment();
-    QList<CComponents *> load_components(int id_item);
+    CUser* authorization(QString login, QString password);
 
     bool updata_document(DocumentType type, CDocument* document);
 

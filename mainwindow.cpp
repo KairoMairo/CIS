@@ -1,9 +1,12 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "productionwindow.h"
+
+
 #include <QPushButton>
 #include <QApplication>
 #include <QPalette>
+#include <QMessageBox>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -35,7 +38,19 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_production_BTN_clicked()
 {
-    CProductionWindow* production = new CProductionWindow;
-    production->showMaximized();
+    authorizationDlg = new CAuthorizationWindow;
+
+    CController* controller = new CController();
+    connect(this, SIGNAL(authorization(CController*)), authorizationDlg, SLOT(get_controller(CController*)));
+    connect(authorizationDlg, SIGNAL(ok(CController*)), this, SLOT(open_production(CController*)));
+    emit authorization(controller);
+
+    authorizationDlg->show();
+
+}
+
+void MainWindow::open_production(CController* controller)
+{
     this->close();
 }
+
