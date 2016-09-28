@@ -21,7 +21,10 @@ enum
     ADDED_DATE,
     STATUS,
     COMPLETION_DATE,
-    COMMENT
+    COMMENT,
+    ID_COMPONENT,
+    ID_ITEM,
+    COUNT_COMPONENT
 };
 
 enum
@@ -49,6 +52,8 @@ CProductionWindow::CProductionWindow(QWidget *parent) :
 
     //обновляем текущую таблицу
     updata_table(test_page());
+
+    update_list_components();
 }
 
 CProductionWindow::~CProductionWindow()
@@ -70,6 +75,7 @@ CProductionWindow::~CProductionWindow()
 
     delete ui;
 }
+
 
 //задаетм модели для таблиц окна производства
 void CProductionWindow::make_tables_model()
@@ -158,6 +164,54 @@ void CProductionWindow::updata_table(DocumentType type)
 
 }
 
+//выводим список комплектующих
+void CProductionWindow::update_list_components()
+{
+    int ind = controller->set_index_window_item();
+    controller->load_components(ind);
+
+    if (ui->component_table->model() != NULL)
+    {
+        delete ui->component_table->model();
+    }
+
+    QStringList horizontalHeader;
+    horizontalHeader.append("Номер");
+    horizontalHeader.append("Номер материала");
+    horizontalHeader.append("Номер изделия");
+    horizontalHeader.append("Количество материалов");
+
+    QStandardItemModel *model = new QStandardItemModel;
+    model->setHorizontalHeaderLabels(horizontalHeader);
+
+    QStandardItem *item;
+
+    int size = controller->get_item_size();
+
+    for (int i = 0; i < size; i++)
+    {
+        item = new QStandardItem(controller->get_components_id(i));
+        model->setItem(i, ID, item);
+
+        item = new QStandardItem(controller->get_components_name(i));
+        model->setItem(i, NAME, item);
+
+        item = new QStandardItem(controller->get_components_id_component(i));
+        model->setItem(i, ID_COMPONENT, item);
+
+        item = new QStandardItem(controller->get_components_count(i));
+        model->setItem(i, ID_ITEM, item);
+
+        item = new QStandardItem(controller->get_components_id_item(i));
+        model->setItem(i, COUNT_COMPONENT, item);
+    }
+
+    ui->component_table->setModel(model);
+    ui->component_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->component_table->resizeColumnsToContents();
+    ui->component_table->resizeRowsToContents();
+}
+
 //Обрабатываем событие перед выходом
 void CProductionWindow::closeEvent(QCloseEvent *event)
 {
@@ -240,6 +294,8 @@ int CProductionWindow::test_save()
     return QMessageBox::Ok;
 }
 
+
+
 //перейти в главное меню
 void CProductionWindow::go_main_menu()
 {
@@ -265,12 +321,13 @@ void CProductionWindow::slot_go_main_menu()
 
 }
 
+
 //открываем окно просмотра заказов
 void CProductionWindow::on_review_document_3_clicked()
 {
-    int index = ui->order_table->currentIndex().row();
-
-    if (index < 0)
+    _index = ui->order_table->currentIndex().row();
+    controller->get_index_window_item(_index);
+    if (_index < 0)
     {
         QMessageBox::information(this, "Ошибка", "Не выбран документ для просмотра!");
         return;
@@ -280,7 +337,7 @@ void CProductionWindow::on_review_document_3_clicked()
 
     connect(this, SIGNAL(review_order(CController*, int)), order_window, SLOT(get_controller(CController*, int)));
 
-    emit review_order(controller, index);
+    emit review_order(controller, _index);
 
     order_window->show();
 }
@@ -320,4 +377,5 @@ void CProductionWindow::on_save_all_triggered()
 void CProductionWindow::on_work_space_currentChanged(int index)
 {
     updata_table(test_page());
+    update_list_components();
 }
