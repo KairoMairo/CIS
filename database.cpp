@@ -7,7 +7,7 @@
 #include <QVariant>
 #include <QFileInfo>
 #include <QDir>
-
+#include<QMessageBox>
 #include <QStringList>
 
 
@@ -24,12 +24,6 @@ QList<CDocument*> CDataBase::load_document(DocumentType type)
 {
     //формируем запрос
     QString string =    "SELECT * FROM documents WHERE type = %1;";
-                        /*"SELECT * FROM equipment, equipment_list
-                         * WHERE equipment.id_equipment = equipment_list.id"
-                        "(SELECT id FROM equipment_list WHERE id IN "
-                        "(SELECT id_equipment FROM pricessing_list, processing WHERE "
-                        "processing_list.id = processing.id_processing AND "
-                        "id_output = %1));";*/
     string =            string.arg(type);
     QSqlQuery query(data_base);
 
@@ -38,18 +32,19 @@ QList<CDocument*> CDataBase::load_document(DocumentType type)
             //return NULL;
     }
 
+    QSqlRecord rec =    query.record();
     QList<CDocument*>   documents;
     CDocument*          document;
 
     while (query.next())
     {
-        document = new CDocument(query.value("id").toInt(),
-                                  query.value("name").toString(),
+        document = new CDocument(query.value(rec.indexOf("id")).toInt(),
+                                  query.value(rec.indexOf("name")).toString(),
                                   type,
-                                  query.value("added_date").toDate(),
-                                  query.value("completion_date").toDate(),
-                                  (DocumentStatus)query.value("status").toInt(),
-                                  query.value("comment").toString());
+                                  query.value(rec.indexOf("added_date")).toDate(),
+                                  query.value(rec.indexOf("completion_date")).toDate(),
+                                  (DocumentStatus)query.value(rec.indexOf("status")).toInt(),
+                                  query.value(rec.indexOf("comment")).toString());
 
         documents.push_back(document);
     }
@@ -89,6 +84,43 @@ QList<CItem *> CDataBase::load_items(int id)
     return items;
 }
 
+QList<CComponents *> CDataBase::load_components(int id_item)
+{
+    QString string =    "SELECT * FROM componentsofmaterials;";
+
+    string =            string.arg(id_item);
+
+    QSqlQuery query(data_base);
+
+    if (!query.exec(string))
+    {
+        QMessageBox::warning(0,
+                                     "Warning",
+                                     "БД не подключилась,"
+                                     "",
+                                     QString(),
+                                     0
+                                    );
+    }
+
+    QSqlRecord rec =    query.record();
+    QList<CComponents*>       components;
+    CComponents*              component;
+
+    while (query.next())
+    {
+
+        component = new CComponents(query.value(rec.indexOf("id")).toInt(),
+                         query.value(rec.indexOf("name")).toString(),
+                         query.value(rec.indexOf("id_component")).toInt(),
+                         query.value(rec.indexOf("id_item")).toInt(),
+                         query.value(rec.indexOf("count_component")).toInt());
+
+        components.push_back(component);
+    }
+    return components;
+}
+
 //возвращает индексы обработок для изготовления продукции с id_item из материалов с индексом id_part
 QList<int> CDataBase::load_part_processing(int id_part, int id_item)
 {
@@ -112,12 +144,11 @@ QList<int> CDataBase::load_part_processing(int id_part, int id_item)
     }
 
     return processes;
-
 }
 
 QList<CProcessing *> CDataBase::load_processing(int id_equipment)
 {
-    QString string = QString("SELECT * FROM processing_list WHERE id_equipment = %1;").arg(id_equipment);
+    QString string = "SELECT * FROM processing_list WHERE id_equipment = %1;";
 
     QList<CProcessing*> processes;
     return processes;
@@ -140,55 +171,21 @@ QList<CEquipment *> CDataBase::load_equipment()
 
     while (query.next())
     {
-        /*CEquipment* equipment = new CEquipment(query.value("id").toInt(),
-                                               query.value("name").toString(),
-                                               query.value("specification").toString(),
-                                               query.value("number").toInt(),
-                                               (EquipmentStatus)query.value("status").toInt(),
-                                               query.value("workload").toFloat(),
-                                               query.value("maintenance_interval").toFloat(),
-                                               query.value("maintenance_time").toFloat(),
-                                               query.value("power_consumption").toFloat(),
-                                               query.value("maintenance_day").toDate(),);
+        /*CEquipment* equipment = new CEquipment(query.value(rec.indexOf("id")).toInt(),
+                                               query.value(rec.indexOf("name")).toString(),
+                                               query.value(rec.indexOf("specification")).toString(),
+                                               query.value(rec.indexOf("number")).toInt(),
+                                               (EquipmentStatus)query.value(rec.indexOf("status")).toInt(),
+                                               query.value(rec.indexOf("workload")).toFloat(),
+                                               query.value(rec.indexOf("maintenance_interval")).toFloat(),
+                                               query.value(rec.indexOf("maintenance_time")).toFloat(),
+                                               query.value(rec.indexOf("power_consumption")).toFloat(),
+                                               query.value(rec.indexOf("maintenance_day")).toDate());
 
         equipments.push_back(equipment);*/
     }
 
     return equipments;
-}
-
-CUser *CDataBase::authorization(QString login, QString password)
-{
-    QString string = "SELECT * FROM users, positions "
-                     "WHERE login = \"" +
-                     login +
-                     "\" AND password = \"" +
-                     password + "\";";
-
-    QSqlQuery query(data_base);
-
-    if (!query.exec(string))
-    {
-            return NULL;
-    }
-    query.next();
-
-    QString name = query.value("name").toString();
-
-    if (name.isEmpty())
-    {
-        return NULL;
-    }
-
-    CUser* user = new CUser(query.value("id").toInt(),
-                            name,
-                            query.value("surname").toString(),
-                            query.value("patronymic").toString(),
-                            query.value("position").toString(),
-                            query.value("salary").toFloat(),
-                            query.value("working_hours").toFloat());
-
-    return user;
 }
 
 //обновляем информацию о документе в базе данных
@@ -225,6 +222,7 @@ bool CDataBase::updata_document(DocumentType type, CDocument *document)
 
     return true;
 }
+
 
 //открываем базу данных "производство"
 //при успешном открытии возвращает true

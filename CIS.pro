@@ -30,8 +30,7 @@ SOURCES += main.cpp\
     part.cpp \
     productionmodel.cpp \
     modelproduction.cpp \
-    choosedocument.cpp \
-    user.cpp
+    components.cpp
 
 HEADERS  += mainwindow.h \
     productionwindow.h \
@@ -49,8 +48,7 @@ HEADERS  += mainwindow.h \
     part.h \
     productionmodel.h \
     modelproduction.h \
-    choosedocument.h \
-    user.h
+    components.h
 
 FORMS    += mainwindow.ui \
     productionwindow.ui \
@@ -58,6 +56,5 @@ FORMS    += mainwindow.ui \
     authorizationwindow.ui \
     userwindow.ui \
     orderwindow.ui \
-    equipmentwindow.ui \
-    choosedocument.ui
+    equipmentwindow.ui
 
