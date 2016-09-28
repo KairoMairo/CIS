@@ -1,8 +1,11 @@
 #include "controller.h"
 
+
 CController::CController()
 {
     load_documents(ORDER);
+
+    user = NULL;
 
     for (int type = ORDER; type < QUANTITY_TYPES; type++)
     {
@@ -14,7 +17,7 @@ CController::~CController()
 {
     clear_documents();
     clear_items();
-    clear_components();
+
 }
 
 //перегрузка оператора =
@@ -47,6 +50,7 @@ bool CController::load_documents(DocumentType type)
     {
         return false;
     }
+
     return true;
 }
 
@@ -65,22 +69,6 @@ bool CController::load_items(int index)
     }
 
     if (items.isEmpty())
-    {
-        return false;
-    }
-
-    return true;
-}
-
-//вызывает функцию загрузки из БД списка продукции
-bool CController::load_components(int _index)
-{
-    clear_components();
-
-        components = data_base.load_components(_index);
-
-
-    if (components.isEmpty())
     {
         return false;
     }
@@ -348,71 +336,6 @@ int CController::get_item_size()
     return items.size();
 }
 
-//возвращает индекс выбранной продукции в виде строки
-QString CController::get_components_id(int _index)
-{
-    if (_index < components.size())
-    {
-        return components[_index]->get_id();
-    }
-
-    return "";
-}
-
-//возвращает название выбранной продукции в виде строки
-QString CController::get_components_name(int _index)
-{
-    if (_index < components.size())
-    {
-        return components[_index]->get_name();
-    }
-
-    return "";
-}
-
-//возвращает индекс выбранного материала в виде строки
-QString CController::get_components_id_component(int _index)
-{
-    if (_index < components.size())
-    {
-        return components[_index]->get_id_component();
-    }
-
-    return "";
-}
-
-//возвращает цену выбранной продукции в виде строки
-QString CController::get_components_count(int _index)
-{
-    if (_index < components.size())
-    {
-        return components[_index]->get_count_component();
-    }
-
-    return "";
-}
-
-//возвращает  индекс выбранной продукции для сопоставления с материалом в виде строки
-QString CController::get_components_id_item(int _index)
-{
-   if (_index < components.size())
-    {
-        return components[_index]->get_id_item();
-   }
-
-    return "";
-}
-
-void CController::get_index_window_item(int index)
-{
-    _index = index;
-}
-
-int CController::set_index_window_item()
-{
-    return _index;
-}
-
 // проверяет, все ли документы сохранены
 bool CController::is_saved()
 {
@@ -455,6 +378,23 @@ bool CController::document_signed(DocumentType type, int index)
     return false;
 }
 
+bool CController::authorization(QString login, QString password)
+{
+    if (user != NULL)
+    {
+        delete user;
+    }
+
+    user = data_base.authorization(login, password);
+
+    if (user != NULL)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 //удаляем звездочку в конце строки
 QString CController::delete_star(QString string)
 {
@@ -481,6 +421,31 @@ QString CController::add_star(QString string)
     }
 
     return string;
+}
+
+QString CController::get_user_FIO()
+{
+    return user->get_surname() + " " + user->get_name() + " " + user->get_patronymic();
+}
+
+QString CController::get_user_surname()
+{
+    return user->get_surname();
+}
+
+QString CController::get_user_name()
+{
+    return user->get_name();
+}
+
+QString CController::get_user_patronymic()
+{
+    return user->get_patronymic();
+}
+
+QString CController::get_user_position()
+{
+    return user->get_position();
 }
 
 //отчищаем список заказов
@@ -514,19 +479,4 @@ void CController::clear_documents()
 
         documents[i].clear();
     }
-}
-
-//отчищаем список материалов
-void CController::clear_components()
-{
-    for (int i = 0; i < components.size(); i++)
-    {
-        if (components[i] != NULL)
-        {
-            delete components[i];
-            components[i] = NULL;
-        }
-    }
-
-    components.clear();
 }

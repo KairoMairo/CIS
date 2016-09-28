@@ -18,26 +18,13 @@
     <property name="geometry">
      <rect>
       <x>120</x>
-      <y>80</y>
+      <y>90</y>
       <width>141</width>
       <height>51</height>
      </rect>
     </property>
     <property name="text">
      <string>Производство</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="supply_BTN">
-    <property name="geometry">
-     <rect>
-      <x>120</x>
-      <y>160</y>
-      <width>141</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Снабжение</string>
     </property>
    </widget>
    <widget class="QLabel" name="label">
