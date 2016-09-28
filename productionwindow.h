@@ -26,9 +26,10 @@ public:
 
 private:
     Ui::CProductionWindow *ui;
-    CController* _controller;
+    CController* controller;
     orderwindow* order_window;
     bool signed_now;
+    int _index;
 
 
 private:
@@ -38,7 +39,7 @@ private:
     void closeEvent(QCloseEvent *event);
     void delete_stars();
     void delete_stars(int page);
-    void open_user_window();
+    void update_list_components();
 
     DocumentType test_page();
 
@@ -47,8 +48,7 @@ private:
 
 signals:
     void review_order(CController* controller, int document_index);
-    void authorization(CController* controller);
-    void review_user(CController* controller);
+
 
 private slots:
     void slot_go_main_menu();
@@ -57,13 +57,7 @@ private slots:
     void on_save_triggered();
     void on_save_all_triggered();
     void on_work_space_currentChanged(int index);
-    void on_create_document_clicked();
-    void on_review_document_clicked();
-    void on_reduct_document_clicked();
-    void get_controller(CController* controller);
-    void on_change_user_triggered();
-    void on_show_user_data_triggered();
-    void on_close_program_triggered();
+
 };
 
 #endif // PRODUCTIONWINDOW_H
