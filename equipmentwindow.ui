@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Планирование загрузки мощностей</string>
+   <string>План производства</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(255, 247, 206);</string>

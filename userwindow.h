@@ -2,6 +2,7 @@
 #define USERWINDOW_H
 
 #include <QDialog>
+#include "controller.h"
 
 namespace Ui {
 class CUserWindow;
@@ -17,6 +18,11 @@ public:
 
 private:
     Ui::CUserWindow *ui;
+
+public slots:
+    void get_controller(CController* controller);
+private slots:
+    void on_ok_clicked();
 };
 
 #endif // USERWINDOW_H
